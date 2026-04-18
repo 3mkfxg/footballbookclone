@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gmail - تأكيد حجز ملعب</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: 'Poppins', 'Arial', sans-serif;
+        }
+
+        body {
+            background-color: #f6f8fc;
+            margin: 0;
+            padding: 0;
+        }
+
+        .email-container {
+            max-width: 1000px;
+            margin: 20px auto;
+            background: white;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid #e0e0e0;
+        }
+
+        .email-header {
+            padding: 20px 30px;
+            border-bottom: 1px solid #f1f1f1;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .sender-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .avatar {
+            width: 40px;
+            height: 40px;
+            background: #e67e22;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .sender-details h4 {
+            margin: 0;
+            font-size: 1rem;
+            color: #202124;
+        }
+
+        .sender-details span {
+            font-size: 0.85rem;
+            color: #5f6368;
+        }
+
+        .email-time {
+            font-size: 0.8rem;
+            color: #5f6368;
+        }
+
+        .email-body {
+            padding: 40px 30px;
+            line-height: 1.6;
+        }
+
+        .invitation-card {
+            background: #ffffff;
+            border: 1px solid #e8eaed;
+            border-radius: 12px;
+            padding: 30px;
+            text-align: center;
+            max-width: 600px;
+            margin: 0 auto;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.02);
+        }
+
+        .invitation-card h2 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: #202124;
+        }
+
+        .invitation-card p {
+            margin-bottom: 25px;
+            color: #5f6368;
+        }
+
+        .confirm-btn-email {
+            background: #28a745;
+            color: white;
+            padding: 12px 30px;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: bold;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            transition: background 0.3s;
+        }
+
+        .confirm-btn-email:hover {
+            background: #218838;
+        }
+
+        .disclaimer {
+            margin-top: 30px;
+            font-size: 0.8rem;
+            color: #70757a;
+            font-style: italic;
+        }
+
+        .email-footer {
+            padding: 20px 30px;
+            border-top: 1px solid #f1f1f1;
+            display: flex;
+            gap: 15px;
+        }
+
+        .action-btn {
+            border: 1px solid #dadce0;
+            padding: 8px 16px;
+            border-radius: 18px;
+            font-size: 0.85rem;
+            color: #5f6368;
+            background: transparent;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .action-btn:hover {
+            background: #f8f9fa;
+        }
+    </style>
+</head>
+<body>
+
+<div class="email-container">
+    <div class="email-header">
+        <div class="sender-info">
+            <div class="avatar">م</div>
+            <div class="sender-details">
+                <h4>مركز الحاسوب - التطبيقات الالكترونية</h4>
+                <span>إلى: فوزي مهيزع &lt;fawzi@gmail.com&gt;</span>
+            </div>
+        </div>
+        <div class="email-time">
+            السبت 18/4/2026 الساعة 3:13 ص
+        </div>
+    </div>
+
+    <div class="email-body">
+        <div class="invitation-card">
+            <h2>مرحباً 👋</h2>
+            <p>لقد تمت دعوتك لحجز ملعب، فيما يلي تفاصيل الحجز</p>
+            <a href="#" id="confirmLink" class="confirm-btn-email">تأكيد الحجز ✅</a>
+            <p class="disclaimer">إذا لم تقم بطلب هذا الحجز، يمكنك تجاهل هذا الإيميل.</p>
+        </div>
+    </div>
+
+    <div class="email-footer">
+        <button class="action-btn"><i class="fas fa-reply"></i> رد</button>
+        <button class="action-btn"><i class="fas fa-reply-all"></i> الرد على الكل</button>
+        <button class="action-btn"><i class="fas fa-share"></i> إعادة توجيه</button>
+    </div>
+</div>
+
+<script>
+    // Link to confirmation page with dynamic data
+    document.addEventListener('DOMContentLoaded', () => {
+        const urlParams = new URLSearchParams(window.location.search);
+        const confirmLink = document.getElementById('confirmLink');
+        
+        // Pass all received parameters forward to confirm.html
+        confirmLink.href = 'confirm.html?' + urlParams.toString();
+    });
+</script>
+</body>
+</html>

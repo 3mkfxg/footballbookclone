@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>حجز الملعب - نظام حجز الملاعب</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <style>
+        .booking-content {
+            padding: 40px 5%;
+            max-width: 1200px;
+            margin: auto;
+        }
+
+        .stadium-detail-header {
+            background: var(--white);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            display: flex;
+            margin-bottom: 30px;
+            border: 1px solid #eee;
+        }
+
+        .stadium-detail-img {
+            flex: 1;
+            height: 250px;
+            object-fit: cover;
+        }
+
+        .stadium-detail-info {
+            flex: 1.5;
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .stadium-detail-info h1 {
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            font-size: 1.8rem;
+        }
+
+        .booking-grid {
+            display: grid;
+            grid-template-columns: 1.2fr 1fr;
+            gap: 25px;
+        }
+
+        .calendar-card {
+            background: var(--white);
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            border: 1px solid #eee;
+        }
+
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .calendar-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .calendar-table th, .calendar-table td {
+            text-align: center;
+            padding: 12px 5px;
+            border: 1px solid #f0f0f0;
+            font-size: 0.9rem;
+        }
+
+        .calendar-table th {
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+
+        .calendar-table td:not(.empty) {
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .calendar-table td:hover:not(.empty) {
+            background: rgba(146, 25, 55, 0.05);
+        }
+
+        .calendar-table td.today {
+            background: var(--primary-color);
+            color: var(--white);
+            border-radius: 4px;
+        }
+
+        .form-card {
+            background: var(--white);
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            border: 1px solid #eee;
+        }
+
+        .booking-form-item {
+            margin-bottom: 20px;
+        }
+
+        .booking-form-item label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 700;
+            color: var(--text-label);
+            font-size: 0.95rem;
+        }
+
+        .booking-form-item input, .booking-form-item select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid var(--input-border);
+            border-radius: 6px;
+            font-size: 1rem;
+            background: var(--input-bg);
+            color: var(--text-dark);
+        }
+
+        .player-list {
+            margin-top: 15px;
+        }
+
+        .player-chip {
+            display: inline-flex;
+            align-items: center;
+            background: #f0f0f0;
+            padding: 6px 15px;
+            border-radius: 20px;
+            margin: 4px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .player-chip i {
+            margin-right: 10px;
+            color: #d9534f;
+            cursor: pointer;
+        }
+
+        @media (max-width: 900px) {
+            .stadium-detail-header { flex-direction: column; }
+            .booking-grid { grid-template-columns: 1fr; }
+            .stadium-detail-img { height: 200px; }
+        }
+    </style>
+</head>
+<body>
+
+<header class="main-header">
+    <div class="burger-menu" id="burgerToggle">
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
+    </div>
+    <nav class="nav-menu" id="navMenu">
+        <ul>
+            <li><a href="home.html">الرئيسية</a></li>
+            <li><a href="stadiums.html">الملاعب</a></li>
+            <li><a href="login.html">تسجيل الخروج <i class="fas fa-sign-out-alt"></i></a></li>
+        </ul>
+    </nav>
+    <div class="logo">
+        <img src="https://app.iu.edu.jo/stb/Images/israaLogo2.png" alt="University Logo">
+    </div>
+</header>
+
+<div class="booking-content">
+    <div class="stadium-detail-header">
+        <img id="stadiumImg" src="https://app.iu.edu.jo/stb/Images/hero.jpeg" alt="Stadium" class="stadium-detail-img">
+        <div class="stadium-detail-info">
+            <h1 id="stadiumName">حجز الملعب</h1>
+            <p id="stadiumDesc">يرجى اختيار الموعد المناسب وتأكيد الحجز باتباع التعليمات.</p>
+        </div>
+    </div>
+
+    <div class="booking-grid">
+        <div class="calendar-card">
+            <div class="calendar-header">
+                <button class="btn btn-outline" style="padding: 5px 15px;"><i class="fas fa-chevron-right"></i></button>
+                <h3 id="calendarMonth">أبريل 2026</h3>
+                <button class="btn btn-outline" style="padding: 5px 15px;"><i class="fas fa-chevron-left"></i></button>
+            </div>
+            <table class="calendar-table">
+                <thead>
+                    <tr>
+                        <th>الأحد</th><th>الأثنين</th><th>الثلاثاء</th><th>الأربعاء</th><th>الخميس</th><th>الجمعة</th><th>السبت</th>
+                    </tr>
+                </thead>
+                <tbody id="calendarBody">
+                    <!-- Simple Mock Calendar -->
+                </tbody>
+            </table>
+        </div>
+
+        <div class="form-card">
+            <div class="booking-form-item">
+                <label>اسم اللاعب (يدوي):</label>
+                <input type="text" id="manualPlayerName" placeholder="أدخل اسم اللاعب">
+            </div>
+
+            <div class="booking-form-item">
+                <label>تاريخ الحجز (يدوي):</label>
+                <input type="date" id="manualDate">
+            </div>
+
+            <div class="booking-form-item">
+                <label>اختر الساعة:</label>
+                <select id="timeSlot">
+                    <option>08:00 AM</option>
+                    <option>09:00 AM</option>
+                    <option>10:00 AM</option>
+                    <option>11:00 AM</option>
+                    <option>12:00 PM</option>
+                    <option>01:00 PM</option>
+                    <option>04:00 PM</option>
+                    <option>05:00 PM</option>
+                </select>
+            </div>
+
+            <div class="booking-form-item">
+                <label>اختر من اللاعبين المحفوظين:</label>
+                <select id="savedPlayersSelect" onchange="selectSavedPlayer()">
+                    <option value="">-- اختر لاعب --</option>
+                    <!-- Options loaded via JS -->
+                </select>
+            </div>
+
+            <div class="booking-form-item">
+                <label>أدخل رقم اللاعب (مثال: AGXXXX):</label>
+                <div style="display: flex; gap: 10px;">
+                    <input type="text" id="playerCode" placeholder="رقم الطالب">
+                    <button class="btn btn-primary" style="width: auto; padding: 0 20px;" onclick="addPlayer()">أضف</button>
+                </div>
+                <div class="player-list" id="playerList"></div>
+            </div>
+
+            <button class="btn btn-primary" style="width: 100%; padding: 15px; font-size: 1.1rem;" onclick="confirmBooking()">تأكيد الحجز</button>
+        </div>
+    </div>
+</div>
+
+<footer>
+    <div class="footer-container">
+        <p>جميع الحقوق محفوظة مركز الحاسوب © 2025</p>
+        <div class="social-icons">
+            <a href="#"><i class="fab fa-facebook-f"></i></a>
+            <a href="#"><i class="fab fa-twitter"></i></a>
+            <a href="#"><i class="fab fa-instagram"></i></a>
+        </div>
+    </div>
+</footer>
+
+<script src="main.js"></script>
+<script>
+    // Dynamic content from URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const sName = urlParams.get('name') || 'حجز الملعب';
+    const sImg = urlParams.get('img') || 'https://app.iu.edu.jo/stb/Images/hero.jpeg';
+    
+    document.getElementById('stadiumName').innerText = `حجز ${sName}`;
+    document.getElementById('stadiumImg').src = sImg;
+    document.title = `حجز ${sName} - نظام حجز الملاعب`;
+
+    // Load saved players into dropdown
+    function loadSavedPlayersDropdown() {
+        const select = document.getElementById('savedPlayersSelect');
+        const players = JSON.parse(localStorage.getItem('savedPlayers')) || [];
+        
+        select.innerHTML = '<option value="">-- اختر لاعب --</option>' + 
+            players.map(p => `<option value="${p.id}">${p.name} (${p.id})</option>`).join('');
+    }
+    loadSavedPlayersDropdown();
+
+    function selectSavedPlayer() {
+        const select = document.getElementById('savedPlayersSelect');
+        const input = document.getElementById('playerCode');
+        if (select.value) {
+            input.value = select.value;
+        }
+    }
+
+    // Simple Calendar Generator for April 2026
+    const calendarBody = document.getElementById('calendarBody');
+    let html = '<tr>';
+    // April 2026 starts on Wednesday (empty cells for Sun, Mon, Tue)
+    html += '<td class="empty"></td><td class="empty"></td><td class="empty"></td>';
+    for(let i=1; i<=30; i++) {
+        const cls = i === 18 ? 'today' : '';
+        html += `<td class="${cls}">${i}</td>`;
+        if((i + 3) % 7 === 0) html += '</tr><tr>';
+    }
+    html += '</tr>';
+    calendarBody.innerHTML = html;
+
+    function addPlayer() {
+        const input = document.getElementById('playerCode');
+        const code = input.value.trim();
+        if (!code) return;
+        
+        const list = document.getElementById('playerList');
+        const chip = document.createElement('div');
+        chip.className = 'player-chip';
+        chip.innerHTML = `${code} <i class="fas fa-times-circle" onclick="this.parentElement.remove()"></i>`;
+        list.appendChild(chip);
+        input.value = '';
+    }
+
+    function confirmBooking() {
+        const playerName = document.getElementById('manualPlayerName').value || 'فوزي محمود فوزي مهيزع';
+        const stadiumName = document.getElementById('stadiumName').innerText.replace('حجز ', '');
+        const date = document.getElementById('manualDate').value || '2026-04-19';
+        const time = document.getElementById('timeSlot').value || '09:00 AM';
+        const gameType = stadiumName.includes('بادل') ? 'بادل' : 
+                         stadiumName.includes('قدم') ? 'كرة قدم' : 'رياضة أخرى';
+
+        Swal.fire({
+            title: 'جاري إرسال البريد الإلكتروني...',
+            timer: 1500,
+            timerProgressBar: true,
+            didOpen: () => {
+                Swal.showLoading()
+            }
+        }).then(() => {
+            const params = new URLSearchParams({
+                playerName,
+                stadiumName,
+                date,
+                time,
+                gameType,
+                img: sImg
+            });
+            window.location.href = `email_mock.html?${params.toString()}`;
+        });
+    }
+</script>
+</body>
+</html>

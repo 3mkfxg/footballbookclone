@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>اللاعبين - نظام حجز الملاعب</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <style>
+        .players-content {
+            padding: 40px 5%;
+            max-width: 800px;
+            margin: auto;
+        }
+
+        .manage-card {
+            background: var(--white);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: var(--shadow);
+            margin-bottom: 30px;
+        }
+
+        .manage-card h2 {
+            color: var(--primary-color);
+            margin-bottom: 25px;
+            text-align: center;
+        }
+
+        .player-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+            transition: var(--transition);
+        }
+
+        .player-row:hover {
+            background: #fdfdfd;
+        }
+
+        .player-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .player-name {
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+
+        .player-id {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .actions {
+            display: flex;
+            gap: 15px;
+        }
+
+        .actions i {
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .actions .fa-trash {
+            color: #ff4444;
+        }
+
+        .actions .fa-trash:hover {
+            transform: scale(1.2);
+        }
+
+        .add-player-btn {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<header class="main-header">
+    <div class="burger-menu" id="burgerToggle">
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
+    </div>
+    <nav class="nav-menu" id="navMenu">
+        <ul>
+            <li><a href="home.html">الرئيسية</a></li>
+            <li><a href="stadiums.html">الملاعب</a></li>
+            <li><a href="players.html" class="active">اللاعبين</a></li>
+            <li><a href="login.html">تسجيل الخروج <i class="fas fa-sign-out-alt"></i></a></li>
+        </ul>
+    </nav>
+    <div class="logo">
+        <img src="https://app.iu.edu.jo/stb/Images/israaLogo2.png" alt="University Logo">
+    </div>
+</header>
+
+<main class="players-content">
+    <div class="manage-card">
+        <h2>قائمة اللاعبين المحفوظين</h2>
+        
+        <div id="playersList">
+            <!-- Loaded from localStorage -->
+        </div>
+
+        <div class="add-player-btn">
+            <button class="btn btn-primary" onclick="openAddModal()">
+                <i class="fas fa-plus"></i> إضافة لاعب جديد
+            </button>
+        </div>
+    </div>
+</main>
+
+<footer>
+    <div class="footer-container">
+        <p>جميع الحقوق محفوظة مركز الحاسوب © 2025</p>
+        <div class="social-icons">
+            <a href="#"><i class="fab fa-facebook-f"></i></a>
+            <a href="#"><i class="fab fa-twitter"></i></a>
+            <a href="#"><i class="fab fa-instagram"></i></a>
+        </div>
+    </div>
+</footer>
+
+<script src="main.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', loadPlayers);
+
+    function loadPlayers() {
+        const list = document.getElementById('playersList');
+        const players = JSON.parse(localStorage.getItem('savedPlayers')) || [];
+        
+        if (players.length === 0) {
+            list.innerHTML = `<p style="text-align:center; color:#888; padding:20px;">لا يوجد لاعبين محفوظين حالياً.</p>`;
+            return;
+        }
+
+        list.innerHTML = players.map((p, index) => `
+            <div class="player-row">
+                <div class="player-info">
+                    <span class="player-name">${p.name}</span>
+                    <span class="player-id">${p.id}</span>
+                </div>
+                <div class="actions">
+                    <i class="fas fa-trash" onclick="deletePlayer(${index})"></i>
+                </div>
+            </div>
+        `).join('');
+    }
+
+    async function openAddModal() {
+        const { value: formValues } = await Swal.fire({
+            title: 'إضافة لاعب جديد',
+            html:
+                '<input id="swal-input1" class="swal2-input" placeholder="اسم اللاعب">' +
+                '<input id="swal-input2" class="swal2-input" placeholder="رقم الطالب (AGXXXX)">',
+            focusConfirm: false,
+            confirmButtonText: 'إضافة',
+            preConfirm: () => {
+                const name = document.getElementById('swal-input1').value;
+                const id = document.getElementById('swal-input2').value;
+                if (!name || !id) {
+                    Swal.showValidationMessage('يرجى تعبئة جميع الحقول')
+                    return false;
+                }
+                return { name, id };
+            }
+        });
+
+        if (formValues) {
+            const players = JSON.parse(localStorage.getItem('savedPlayers')) || [];
+            players.push(formValues);
+            localStorage.setItem('savedPlayers', JSON.stringify(players));
+            loadPlayers();
+            Swal.fire('تم!', 'تمت إضافة اللاعب بنجاح.', 'success');
+        }
+    }
+
+    function deletePlayer(index) {
+        Swal.fire({
+            title: 'هل أنت متأكد؟',
+            text: "سيتم حذف اللاعب من القائمة!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'نعم، احذف',
+            cancelButtonText: 'إلغاء'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                const players = JSON.parse(localStorage.getItem('savedPlayers')) || [];
+                players.splice(index, 1);
+                localStorage.setItem('savedPlayers', JSON.stringify(players));
+                loadPlayers();
+            }
+        });
+    }
+</script>
+</body>
+</html>

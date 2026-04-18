@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الرئيسية - نظام حجز الملاعب</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <style>
+        .dashboard-header {
+            text-align: center;
+            padding: 40px 0;
+            background: #fff;
+            margin-bottom: 20px;
+        }
+
+        .dashboard-header h1 {
+            font-size: 2rem;
+            color: #333;
+            font-weight: 700;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .dashboard-header h1 { font-size: 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+<header class="main-header">
+    <div class="burger-menu" id="burgerToggle">
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
+    </div>
+    <nav class="nav-menu" id="navMenu">
+        <ul>
+            <li><a href="home.html" class="active">الرئيسية</a></li>
+            <li><a href="stadiums.html">الملاعب</a></li>
+            <li><a href="players.html">اللاعبين</a></li>
+            <li><a href="login.html">تسجيل الخروج <i class="fas fa-sign-out-alt"></i></a></li>
+        </ul>
+    </nav>
+    <div class="logo">
+        <img src="https://app.iu.edu.jo/stb/Images/israaLogo2.png" alt="University Logo">
+    </div>
+</header>
+
+<div class="dashboard-header">
+    <h1>اختر ملعبك المفضل</h1>
+</div>
+
+<main id="stadiums">
+    <div class="stadium-grid" id="featuredGrid">
+        <!-- Populated via script for consistency -->
+    </div>
+</main>
+
+<footer>
+    <div class="footer-container">
+        <p>جميع الحقوق محفوظة مركز الحاسوب © 2025</p>
+        <div class="social-icons">
+            <a href="#"><i class="fab fa-facebook-f"></i></a>
+            <a href="#"><i class="fab fa-twitter"></i></a>
+            <a href="#"><i class="fab fa-instagram"></i></a>
+        </div>
+    </div>
+</footer>
+
+<script src="main.js"></script>
+<script>
+    const stadiums = [
+        { id: 'STD001', name: 'ملعب البادل A', img: 'https://app.iu.edu.jo/stb/Images/Padel_3.jpg', desc: 'البادل هو رياضة مضرب تُلعب غالبًا بشكل زوجي، في ملعب مغلق أصغر من ملعب التنس. يتميز الملعب بجدران زجاجية يمكن ضرب الكرة عليها، مثلما يحدث في لعبة الاسكواش.' },
+        { id: 'STD002', name: 'ملعب البادل B', img: 'https://app.iu.edu.jo/stb/Images/Padel_3.jpg', desc: 'البادل هو رياضة مضرب تُلعب غالبًا بشكل زوجي، في ملعب مغلق أصغر من ملعب التنس. يتميز الملعب بجدران زجاجية يمكن ضرب الكرة عليها، مثلما يحدث في لعبة الاسكواش.' },
+        { id: 'STD003', name: 'ملعب البادل C', img: 'https://app.iu.edu.jo/stb/Images/Padel_3.jpg', desc: 'البادل هو رياضة مضرب تُلعب غالبًا بشكل زوجي، في ملعب مغلق أصغر من ملعب التنس. يتميز الملعب بجدران زجاجية يمكن ضرب الكرة عليها، مثلما يحدث في لعبة الاسكواش.' },
+        { id: 'STD004', name: 'ملعب البادل D', img: 'https://app.iu.edu.jo/stb/Images/Padel_3.jpg', desc: 'البادل هو رياضة مضرب تُلعب غالبًا بشكل زوجي، في ملعب مغلق أصغر من ملعب التنس. يتميز الملعب بجدران زجاجية يمكن ضرب الكرة عليها، مثلما يحدث في لعبة الاسكواش.' },
+        { id: 'STD005', name: 'ملعب كرة القدم الخماسي', img: 'https://app.iu.edu.jo/stb/Images/sport1.jpg', desc: 'ملعب كرة القدم الخماسي مصمم للعب كرة القدم مع 5 لاعبين في كل فريق، يوفر مساحة أصغر مقارنة بالملعب التقليدي. يعتبر الخيار المثالي للتمتع بمباريات سريعة ومليئة بالحماس.' },
+        { id: 'STD006', name: 'ملعب كرة القدم السداسي', img: 'https://app.iu.edu.jo/stb/Images/sport3.jpg', desc: 'ملعب كرة القدم السداسي مصمم لأداء المباريات مع 6 لاعبين في كل فريق. يوفر مساحة مريحة تلائم الرياضة السريعة والحماسية مع مرونة في تنظيم البطولات الصغيرة والمباريات الودية.' },
+        { id: 'STD007', name: 'ملعب شاطئي', img: 'https://app.iu.edu.jo/stb/Images/sport2.jpg', desc: 'ملعب شاطئي مخصص للرياضات التي تُلعب على الرمال مثل كرة القدم الشاطئية وكرة الطائرة. يعتبر الخيار المثالي للتمتع بالرياضة في الهواء الطلق ضمن أجواء طبيعية في بيئة رائعة.' },
+        { id: 'STD008', name: 'ملعب متعدد الاستخدام', img: 'https://app.iu.edu.jo/stb/Images/sport4.jpeg', desc: 'الملعب متعدد الاستخدام يوفر بيئة مثالية للعديد من الرياضات مثل كرة السلة، كرة الطائرة، التنس الأرضي، كرة القدم. يمكن تكييفه بسهولة لاحتياجات فعاليات رياضية مختلفة مما يوفر مرونة لا مثيل لها.' },
+        { id: 'STD009', name: 'ملعب سكواتش A', img: 'https://app.iu.edu.jo/stb/Images/sport9.png', desc: 'السكواش من أكثر الرياضات التي تحرق السعرات، وقد تصل إلى 900 سعرة حرارية في الساعة الواحدة تطور اللياقة والمرونة والقوة العضلية بشكل كبير تقوي القلب، الرئتين، وعضلات الجسم الأساسية Core muscle.' },
+        { id: 'STD010', name: 'ملعب سكواتش B', img: 'https://app.iu.edu.jo/stb/Images/sport9.png', desc: 'السكواش من أكثر الرياضات التي تحرق السعرات، وقد تصل إلى 900 سعرة حرارية في الساعة الواحدة تطور اللياقة والمرونة والقوة العضلية بشكل كبير تقوي القلب، الرئتين، وعضلات الجسم الأساسية Core muscle.' }
+    ];
+
+    const grid = document.getElementById('featuredGrid');
+    stadiums.forEach(s => {
+        const card = document.createElement('div');
+        card.className = 'stadium-card';
+        card.innerHTML = `
+            <img src="${s.img}" alt="${s.name}" class="stadium-img">
+            <div class="stadium-info">
+                <h3>${s.name}</h3>
+                <p>${s.desc}</p>
+                <a href="booking.html?id=${s.id}&name=${encodeURIComponent(s.name)}&img=${encodeURIComponent(s.img)}" class="btn btn-primary">احجز الآن</a>
+            </div>
+        `;
+        grid.appendChild(card);
+    });
+</script>
+</body>
+</html>

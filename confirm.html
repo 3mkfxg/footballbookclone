@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تفاصيل الحجز - جامعة الإسراء</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <style>
+        body {
+            background-color: #EBEBF0;
+            min-height: 11vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .confirm-wrapper {
+            flex-grow: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 40px 20px;
+        }
+
+        .confirm-card {
+            background: var(--white);
+            width: 100%;
+            max-width: 600px;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+            animation: fadeIn 0.5s ease;
+        }
+
+        .confirm-card h2 {
+            text-align: center;
+            font-size: 24px;
+            color: var(--text-dark);
+            margin-bottom: 25px;
+            font-weight: 700;
+        }
+
+        .success-banner {
+            display: none;
+            background: #fff;
+            text-align: right;
+            padding: 5px 0;
+            margin-bottom: 15px;
+            color: var(--secondary-color);
+            font-weight: 700;
+            font-size: 1.1rem;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .confirm-item {
+            margin-bottom: 20px;
+        }
+
+        .confirm-item label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 700;
+            color: var(--text-label);
+            font-size: 16px;
+        }
+
+        .confirm-value {
+            width: 100%;
+            padding: 12px;
+            background: var(--input-bg);
+            border: 1px solid var(--input-border);
+            border-radius: 4px;
+            font-size: 16px;
+            color: var(--text-dark);
+            text-align: right;
+            min-height: 48px;
+        }
+
+        .btn-confirm-final {
+            width: 100%;
+            padding: 12px;
+            background: var(--secondary-color);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition);
+            margin-top: 10px;
+        }
+
+        .btn-confirm-final:hover {
+            background: #218838;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(100px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 480px) {
+            .confirm-card { padding: 25px; }
+        }
+    </style>
+</head>
+<body>
+
+<header class="main-header">
+    <div class="logo" style="margin-right: auto; margin-left: 1px;">
+        <img src="https://app.iu.edu.jo/stb/Images/israaLogo2.png" alt="University Logo">
+    </div>
+</header>
+
+<main class="confirm-wrapper">
+    <div class="confirm-card">
+        <h2>تفاصيل الحجز</h2>
+
+        <div class="success-banner" id="successBanner">
+             <span>✅ تم تأكيد الحجز بنجاح!</span>
+        </div>
+
+        <div class="confirm-item">
+            <label>الطالب الذي قام بالحجز:</label>
+            <div class="confirm-value" id="valName">...</div>
+        </div>
+
+        <div class="confirm-item">
+            <label>الملعب:</label>
+            <div class="confirm-value" id="valStadium">...</div>
+        </div>
+
+        <div class="confirm-item">
+            <label>نوع اللعبة:</label>
+            <div class="confirm-value" id="valGame">...</div>
+        </div>
+
+        <div class="confirm-item">
+            <label>التاريخ:</label>
+            <div class="confirm-value" id="valDate">...</div>
+        </div>
+
+        <div class="confirm-item">
+            <label>الوقت:</label>
+            <div class="confirm-value" id="valTime">...</div>
+        </div>
+
+        <button class="btn-confirm-final" id="confirmBtn" onclick="handleFinalConfirm()">تأكيد الحجز</button>
+    </div>
+</main>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const params = new URLSearchParams(window.location.search);
+        
+        document.getElementById('valName').innerText = params.get('playerName') || 'فوزي محمود فوزي مهيزع';
+        document.getElementById('valStadium').innerText = params.get('stadiumName') || 'ملعب البادل A';
+        document.getElementById('valGame').innerText = params.get('gameType') || 'بادل';
+        document.getElementById('valDate').innerText = params.get('date') || '2026-04-19';
+        document.getElementById('valTime').innerText = (params.get('time') || '09:00 AM');
+    });
+
+    function handleFinalConfirm() {
+        // Show success state from screenshot
+        document.getElementById('successBanner').style.display = 'flex';
+        document.getElementById('confirmBtn').disabled = true;
+    }
+</script>
+</body>
+</html>
